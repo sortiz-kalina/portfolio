@@ -2,99 +2,491 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Coding Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sasha's Coding Portfolio - Interactive Skyline</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.min.js"></script>
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #2c003e; /* Dark purple */
-      color: #ffffff;
+      padding: 0;
+      box-sizing: border-box;
     }
-
-    header {
-      text-align: center;
-      padding: 2rem;
-      font-size: 2rem;
-      background-color: #3d0055;
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
     }
-
-    .portfolio {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 2rem;
-    }
-
-    .project {
-      background-color: #2c023d;
-      border-radius: 10px;
-      width: 400px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease;
-    }
-
-    .project:hover {
-      transform: scale(1.05);
-    }
-
-    .project img {
-      width: 100%;
-      border-radius: 8px;
-    }
-
-    .project p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-    }
-
-    a {
-      text-decoration: none;
-      color: #ffffff;
+    
+    #root {
+      width: 100vw;
+      height: 100vh;
     }
   </style>
 </head>
 <body>
+  <div id="root"></div>
 
-  <header>My Coding Portfolio</header>
+  <script type="text/babel">
+    const { useState } = React;
+    const { motion, AnimatePresence } = Motion;
 
-  <div class="portfolio">
-    <div class="project">
-      <a href="https://replit.com/@Helpful-Bananas/The-Bluff-Puff" target="_blank">
-        <img src="puff.jpg" alt="Project 1">
-        <p>Project 1: A simple chatbot that gives a saftey rating for an inputted link and gives web saftey tips, using web scraping and python.</p>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://replit.com/@Helpful-Bananas/Gleaming-Garden-Game-Sasha-OK#script.js">
-        <video width="400" height="240" autoplay muted loop>
-          <source src="screenRec1.mp4" type="video/mp4">
-        </video>
-        <p>Project 2: A cute simulation game built with p5.js, not updated to work with current p5.js</p>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://replit.com/@Helpful-Bananas/Personality-Quiz-Starter-CodeSashaOK#index.html" target="_blank">
-        <img src="spoon.png" alt="Project 3">
-        <p>Project 3: A silly personality quiz</p>
-      </a>
-    </div>
-    <div class="project">
-      <<video width="400" height="240" autoplay muted loop>
-          <source src="video_1.mp4" type="video/mp4">
-        </video> 
-        <p>Project 4: A simple shape sorting game made with js</p>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://replit.com/@jianaidu2907/Scholarship-app" target="_blank">
-        <img src="medium.png" alt="Project 5">
-        <p>Project 5: An old hackathon project worked on with a partner with the idea to help users find a scholarship based on their location</p>
-      </a>
-    </div>
-  </div>
+    function CityBackground() {
+      const [selectedBuilding, setSelectedBuilding] = useState(null);
+      const [showBackground, setShowBackground] = useState(false);
 
+      // Portfolio projects mapped to building IDs (1-6)
+      const projects = {
+        1: {
+          title: "Clovet",
+          description: "A sustainable fashion wardrobe assistant featuring digital closet cataloging, unified secondhand marketplace search, and AI-powered virtual try-on. Winner of 2nd Place Grand Prize at DivHacks 2025.",
+          link: "https://devpost.com/software/clovet-gfejus",
+          mediaType: 'image',
+          mediaSrc: "clovet.png" 
+        },
+        2: {
+          title: "Gleaming Garden Game",
+          description: "A cute simulation game built with p5.js, not updated to work with current p5.js. Users wack weeds as they spread to clean up the garden.",
+          link: "https://replit.com/@Helpful-Bananas/Gleaming-Garden-Game-Sasha-OK#script.js",
+          mediaType: 'video',
+          mediaSrc: "screenRec1.mp4"
+        },
+        3: {
+          title: "Personality Quiz",
+          description: "A silly personality quiz",
+          link: "https://replit.com/@Helpful-Bananas/Personality-Quiz-Starter-CodeSashaOK#index.html",
+          mediaType: 'image',
+          mediaSrc: "spoon.png"
+        },
+        4: {
+          title: "Shape Sorting Game",
+          description: "A simple shape sorting game made with js, intended for children. Users drag the shape into the correct hole",
+          link: "#",
+          mediaType: 'video',
+          mediaSrc: "video_1.mp4"
+        },
+        5: {
+          title: "Scholarship App",
+          description: "An old hackathon project worked on with a partner with the idea to help users find a scholarship based on their location. On input, would display local scholarships and mentors near by.",
+          link: "https://replit.com/@jianaidu2907/Scholarship-app",
+          mediaType: 'image',
+          mediaSrc: "medium.png"
+        },
+        6: {
+          title: "The Bluff Puff",
+          description: "A simple chatbot that gives a safety rating for an inputted link and gives web safety tips, using web scraping and python.",
+          link: "https://replit.com/@Helpful-Bananas/The-Bluff-Puff",
+          mediaType: 'image',
+          mediaSrc: "puff.jpg"
+        }
+      };
+
+      const farBackgroundBuildings = [
+        { height: 220, width: 95, x: 10 },
+        { height: 260, width: 115, x: 120 },
+        { height: 240, width: 100, x: 250 },
+        { height: 280, width: 110, x: 370 },
+        { height: 250, width: 105, x: 500 },
+        { height: 230, width: 95, x: 625 },
+        { height: 270, width: 120, x: 740 },
+        { height: 245, width: 100, x: 880 },
+        { height: 255, width: 110, x: 1000 },
+      ];
+
+      const backgroundBuildings = [
+        { height: 200, width: 90, x: 20 },
+        { height: 240, width: 110, x: 130 },
+        { height: 180, width: 80, x: 260 },
+        { height: 260, width: 100, x: 360 },
+        { height: 220, width: 95, x: 480 },
+        { height: 190, width: 85, x: 595 },
+        { height: 250, width: 105, x: 700 },
+        { height: 210, width: 90, x: 825 },
+        { height: 230, width: 100, x: 935 },
+        { height: 200, width: 85, x: 1055 },
+      ];
+
+      const buildings = [
+        { id: 1, height: 200, width: 80, x: 50, color: '#a8336a', windows: { rows: 8, cols: 3 } },
+        { id: 2, height: 280, width: 100, x: 150, color: '#8b2e5a', windows: { rows: 12, cols: 4 } },
+        { id: 3, height: 160, width: 70, x: 270, color: '#9d3064', windows: { rows: 7, cols: 3 } },
+        { id: 4, height: 320, width: 90, x: 360, color: '#862b57', windows: { rows: 14, cols: 3 } },
+        { id: 5, height: 240, width: 85, x: 470, color: '#a1356a', windows: { rows: 10, cols: 3 } },
+        { id: 6, height: 180, width: 75, x: 575, color: '#942f60', windows: { rows: 8, cols: 3 } },
+        { id: 7, height: 300, width: 95, x: 670, color: '#8b2e5a', windows: { rows: 13, cols: 4 } },
+        { id: 8, height: 220, width: 80, x: 785, color: '#9d3064', windows: { rows: 9, cols: 3 } },
+        { id: 9, height: 260, width: 90, x: 885, color: '#8e2d5c', windows: { rows: 11, cols: 3 } },
+        { id: 10, height: 190, width: 70, x: 995, color: '#a1356a', windows: { rows: 8, cols: 3 } },
+      ];
+
+      const stars = Array.from({ length: 60 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 1200,
+        y: Math.random() * 400,
+        size: Math.random() * 3 + 1.5,
+        opacity: Math.random() * 0.4 + 0.6,
+      }));
+
+      const handleBuildingClick = (buildingId) => {
+        setSelectedBuilding(buildingId === selectedBuilding ? null : buildingId);
+        setShowBackground(false);
+      };
+
+      const handleZoomedClick = () => {
+        if (showBackground) {
+          setShowBackground(false);
+          setSelectedBuilding(null);
+        } else {
+          setShowBackground(true);
+        }
+      };
+
+      const selectedBuildingData = buildings.find(b => b.id === selectedBuilding);
+      const currentProject = selectedBuilding ? projects[selectedBuilding] : null;
+
+      return (
+        <div style={{
+          width: '100%',
+          height: '100vh',
+          background: 'linear-gradient(to bottom, #fef9e7, #fef5d4, #fde9b8)',
+          overflow: 'hidden',
+          position: 'relative'
+        }}>
+          <AnimatePresence>
+            {selectedBuilding === null && !showBackground ? (
+              <motion.div
+                key="skyline"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center'
+                }}
+              >
+                <svg
+                  viewBox="0 0 1200 400"
+                  style={{ width: '100%', height: 'auto', maxHeight: '100%' }}
+                  preserveAspectRatio="xMidYMax meet"
+                >
+                  {stars.map((star) => (
+                    <circle
+                      key={star.id}
+                      cx={star.x}
+                      cy={star.y}
+                      r={star.size}
+                      fill="#ffffff"
+                      opacity={star.opacity}
+                    />
+                  ))}
+
+                  {farBackgroundBuildings.map((building, index) => (
+                    <rect
+                      key={`far-bg-${index}`}
+                      x={building.x}
+                      y={400 - building.height}
+                      width={building.width}
+                      height={building.height}
+                      fill="#fce4ec"
+                      stroke="#f8bbd0"
+                      strokeWidth="1"
+                      opacity="0.4"
+                    />
+                  ))}
+
+                  {backgroundBuildings.map((building, index) => (
+                    <rect
+                      key={`bg-${index}`}
+                      x={building.x}
+                      y={400 - building.height}
+                      width={building.width}
+                      height={building.height}
+                      fill="#f5b8d8"
+                      stroke="#e8a5c9"
+                      strokeWidth="1"
+                      opacity="0.6"
+                    />
+                  ))}
+
+                  {buildings.map((building) => (
+                    <g
+                      key={building.id}
+                      onClick={() => handleBuildingClick(building.id)}
+                      style={{ cursor: 'pointer', transition: 'opacity 0.3s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                    >
+                      {/* Project label - only for buildings with projects */}
+                      {projects[building.id] && (
+                        <text
+                          x={building.x + building.width / 2}
+                          y={400 - building.height - 10}
+                          textAnchor="middle"
+                          fill="#6b1f45"
+                          fontSize="12"
+                          fontWeight="600"
+                          fontFamily="Segoe UI, sans-serif"
+                        >
+                          Project {building.id}
+                        </text>
+                      )}
+                      
+                      <rect
+                        x={building.x}
+                        y={400 - building.height}
+                        width={building.width}
+                        height={building.height}
+                        fill={building.color}
+                        stroke="#6b1f45"
+                        strokeWidth="2"
+                      />
+                      
+                      {Array.from({ length: building.windows.rows }).map((_, row) =>
+                        Array.from({ length: building.windows.cols }).map((_, col) => {
+                          const windowWidth = building.width / (building.windows.cols + 1);
+                          const windowHeight = building.height / (building.windows.rows + 2);
+                          const windowX = building.x + (col + 0.5) * (building.width / building.windows.cols) - windowWidth / 2;
+                          const windowY = 400 - building.height + (row + 1) * (building.height / (building.windows.rows + 1)) - windowHeight / 2;
+                          
+                          return (
+                            <rect
+                              key={`${row}-${col}`}
+                              x={windowX}
+                              y={windowY}
+                              width={windowWidth * 0.6}
+                              height={windowHeight * 0.7}
+                              fill={Math.random() > 0.3 ? '#ff9fd5' : '#6b1f45'}
+                              opacity={Math.random() > 0.3 ? 0.9 : 0.3}
+                            />
+                          );
+                        })
+                      )}
+                    </g>
+                  ))}
+                </svg>
+              </motion.div>
+            ) : showBackground ? (
+              <motion.div
+                key="background"
+                initial={{ scale: 1.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '32px'
+                }}
+              >
+                <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg
+                    viewBox="0 0 1200 400"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: 'auto' }}
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    {stars.map((star) => (
+                      <circle
+                        key={star.id}
+                        cx={star.x}
+                        cy={star.y}
+                        r={star.size}
+                        fill="#ffffff"
+                        opacity={star.opacity}
+                      />
+                    ))}
+                  </svg>
+                  
+                  {currentProject && (
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.3, duration: 0.5 }}
+                      onClick={handleZoomedClick}
+                      style={{
+                        position: 'relative',
+                        zIndex: 10,
+                        maxWidth: '800px',
+                        width: '100%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: '16px',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                        overflow: 'hidden',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <div style={{ padding: '48px' }}>
+                        <h2 style={{ fontSize: '32px', fontWeight: 'bold', color: '#1f2937', marginBottom: '24px' }}>
+                          {currentProject.title}
+                        </h2>
+                        
+                        <div style={{ marginBottom: '24px', borderRadius: '8px', overflow: 'hidden', backgroundColor: '#f3f4f6' }}>
+                          {currentProject.mediaType === 'video' ? (
+                            <video 
+                              style={{ width: '100%', height: 'auto', maxHeight: '384px', objectFit: 'contain' }}
+                              autoPlay 
+                              muted 
+                              loop
+                            >
+                              <source src={currentProject.mediaSrc} type="video/mp4" />
+                            </video>
+                          ) : (
+                            <img 
+                              src={currentProject.mediaSrc} 
+                              alt={currentProject.title}
+                              style={{ width: '100%', height: 'auto', maxHeight: '384px', objectFit: 'contain' }}
+                            />
+                          )}
+                        </div>
+                        
+                        <p style={{ fontSize: '18px', color: '#374151', marginBottom: '24px' }}>
+                          {currentProject.description}
+                        </p>
+                        
+                        {currentProject.link !== '#' && (
+                          <a
+                            href={currentProject.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                              display: 'inline-block',
+                              background: 'linear-gradient(to right, #a8336a, #ff9fd5)',
+                              color: 'white',
+                              padding: '12px 24px',
+                              borderRadius: '8px',
+                              fontWeight: '600',
+                              textDecoration: 'none',
+                              transition: 'all 0.3s'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'linear-gradient(to right, #8b2e5a, #ff7ac4)';
+                              e.currentTarget.style.transform = 'scale(1.05)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'linear-gradient(to right, #a8336a, #ff9fd5)';
+                              e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                          >
+                            View Project →
+                          </a>
+                        )}
+                      </div>
+                      
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '16px',
+                        right: '16px',
+                        color: '#6b7280',
+                        fontSize: '14px'
+                      }}>
+                        Click anywhere to return
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="zoomed"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 1.8, opacity: 0 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                onClick={handleZoomedClick}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '32px'
+                }}
+              >
+                {selectedBuildingData && (
+                  <div style={{ position: 'relative', width: '100%', maxWidth: '800px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg
+                      viewBox={`0 0 ${selectedBuildingData.width * 3} ${selectedBuildingData.height * 1.2}`}
+                      style={{ width: '100%', height: 'auto', maxHeight: '100%', cursor: 'pointer' }}
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <rect
+                        x={selectedBuildingData.width}
+                        y="0"
+                        width={selectedBuildingData.width}
+                        height={selectedBuildingData.height}
+                        fill={selectedBuildingData.color}
+                        stroke="#6b1f45"
+                        strokeWidth="3"
+                      />
+                      
+                      {Array.from({ length: selectedBuildingData.windows.rows }).map((_, row) =>
+                        Array.from({ length: selectedBuildingData.windows.cols }).map((_, col) => {
+                          const windowWidth = selectedBuildingData.width / (selectedBuildingData.windows.cols + 1);
+                          const windowHeight = selectedBuildingData.height / (selectedBuildingData.windows.rows + 2);
+                          const windowX = selectedBuildingData.width + (col + 0.5) * (selectedBuildingData.width / selectedBuildingData.windows.cols) - windowWidth / 2;
+                          const windowY = (row + 1) * (selectedBuildingData.height / (selectedBuildingData.windows.rows + 1)) - windowHeight / 2;
+                          const isLit = Math.random() > 0.3;
+                          
+                          return (
+                            <g key={`${row}-${col}`}>
+                              <rect
+                                x={windowX}
+                                y={windowY}
+                                width={windowWidth * 0.6}
+                                height={windowHeight * 0.7}
+                                fill={isLit ? '#ff9fd5' : '#6b1f45'}
+                                opacity={isLit ? 0.95 : 0.3}
+                                stroke="#8b4066"
+                                strokeWidth="0.5"
+                              />
+                              {isLit && (
+                                <line
+                                  x1={windowX + (windowWidth * 0.3)}
+                                  y1={windowY}
+                                  x2={windowX + (windowWidth * 0.3)}
+                                  y2={windowY + (windowHeight * 0.7)}
+                                  stroke="#ff7ac4"
+                                  strokeWidth="0.3"
+                                  opacity="0.5"
+                                />
+                              )}
+                            </g>
+                          );
+                        })
+                      )}
+                    </svg>
+                    
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '32px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      color: 'rgba(75, 85, 99, 0.7)',
+                      fontSize: '14px'
+                    }}>
+                      {currentProject ? 'Click to see project' : 'Click to zoom out'}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<CityBackground />);
+  </script>
 </body>
 </html>
